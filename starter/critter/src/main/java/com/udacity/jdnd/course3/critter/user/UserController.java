@@ -48,7 +48,8 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        return convertCustomerToCustomerDTO(customerService.findOwnerByPetId(petId));
+        Customer customer = customerService.findOwnerByPetId(petId);
+        return convertCustomerToCustomerDTO(customer);
     }
 
     @PostMapping("/employee")
@@ -78,6 +79,9 @@ public class UserController {
     private CustomerDTO convertCustomerToCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
+        List<Pet> pets = customer.getPets();
+        List<Long> petIds = pets.stream().map(Pet::getId).collect(Collectors.toList());
+        customerDTO.setPetIds(petIds);
         return customerDTO;
 
     }

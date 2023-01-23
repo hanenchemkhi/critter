@@ -21,9 +21,8 @@ public class CustomerService {
     private PetService petService;
 
     public Customer save(Customer customer, List<Long> petIds){
-        if (petIds!=null){
-            customer.setPets(petService.findPetsByIds(petIds));
-        }
+        List<Pet> pets = petService.findPetsByIds(petIds);
+        customer.setPets(pets);
         return customerRepository.save(customer);
     }
 
@@ -34,9 +33,10 @@ public class CustomerService {
         return customerRepository.findById(id).get();
     }
 
-    public Customer findOwnerByPetId(Long petId) {
-        Pet pet = petRepository.findById(petId).get();
-        return pet.getCustomer();
+    public Customer findOwnerByPetId(Long id) {
+
+        Pet pet = petRepository.findById(id).get();
+        return  pet.getCustomer();
     }
 
 }

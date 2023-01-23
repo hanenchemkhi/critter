@@ -24,13 +24,14 @@ public class PetController {
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         Long ownerId = petDTO.getOwnerId();
-        Pet pet = convertPetDTOToPet(petDTO);
-return convertPetToPetDTO(petService.save(pet, ownerId));
+        Pet savedPet = petService.save(convertPetDTOToPet(petDTO),ownerId);
+        return convertPetToPetDTO(savedPet);
 
     }
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
+
         return convertPetToPetDTO(petService.findPetById(petId));
     }
 
@@ -54,6 +55,7 @@ return convertPetToPetDTO(petService.save(pet, ownerId));
     private PetDTO convertPetToPetDTO(Pet pet) {
         PetDTO petDTO = new PetDTO();
         BeanUtils.copyProperties(pet, petDTO);
+        petDTO.setOwnerId(pet.getCustomer().getId());
         return petDTO;
 
     }

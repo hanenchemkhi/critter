@@ -27,7 +27,7 @@ public class Customer {
     String notes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL,orphanRemoval = true)
-    List<Pet> pets = new ArrayList<>();;
+    List<Pet> pets = new ArrayList<>();
 
     @Override
     public String toString() {
