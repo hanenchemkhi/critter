@@ -13,7 +13,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -25,17 +24,16 @@ public class Employee {
     Long id;
     @Nationalized
     String name;
+
+// Resource : https://stackoverflow.com/questions/416208/jpa-map-collection-of-enums
+    @ElementCollection(targetClass = EmployeeSkill.class)
     @Enumerated(EnumType.STRING)
-    Set<EmployeeSkill> skills = new HashSet<>();
+    Set<EmployeeSkill> skills ;
 
+    @ElementCollection(targetClass = DayOfWeek.class)
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    Set<DayOfWeek> daysAvailable = new HashSet<>();
+    Set<DayOfWeek> daysAvailable;
 
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "employee_schedule",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "schedule_id"))
-    List<Schedule> schedules;
+   @ManyToMany(mappedBy = "employees")
+   List<Schedule> schedules;
 }

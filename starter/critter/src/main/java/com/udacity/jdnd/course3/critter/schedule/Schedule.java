@@ -23,14 +23,22 @@ public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    @ManyToMany(mappedBy = "schedules")
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_schedule",
+            joinColumns = @JoinColumn(name = "schedule_id" ),
+            inverseJoinColumns = @JoinColumn(name ="employee_id" ))
     List<Employee> employees;
 
-    @ManyToMany(mappedBy = "schedules")
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "pet_schedule",
+            joinColumns = {@JoinColumn(name= "schedule_id")},
+            inverseJoinColumns = @JoinColumn(name = "pet_id"))
     List<Pet> pets ;
     LocalDate date;
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
+
+    @ElementCollection
     Set<EmployeeSkill> activities;
 
 

@@ -18,29 +18,34 @@ import java.util.List;
 @Entity
 public class Pet {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     Long id;
 
-    @NonNull
     @Nationalized
     String name;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private PetType type;
+    PetType type;
     LocalDate birthDate;
     String notes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    Customer customer;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "pet_schedule",
-            joinColumns = @JoinColumn(name = "pet_id"),
-            inverseJoinColumns = @JoinColumn(name = "schedule_id"))
+    @ManyToMany(mappedBy = "pets")
     List<Schedule> schedules;
 
-
-
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", birthDate=" + birthDate +
+                ", notes='" + notes + '\'' +
+                ", customer=" + customer +
+                ", schedules=" + schedules +
+                '}';
+    }
 }

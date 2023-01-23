@@ -74,6 +74,8 @@ public class CritterFunctionalTest {
         //make sure pet contains customer id
         PetDTO retrievedPet = petController.getPet(newPet.getId());
         Assertions.assertEquals(retrievedPet.getId(), newPet.getId());
+        System.out.println("retrievedPet.getOwnerId() "+retrievedPet.getOwnerId());
+        System.out.println("newCustomer.getId() "+newCustomer.getId());
         Assertions.assertEquals(retrievedPet.getOwnerId(), newCustomer.getId());
 
         //make sure you can retrieve pets by owner
