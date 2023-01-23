@@ -28,6 +28,7 @@ public class Customer {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL,orphanRemoval = true)
     List<Pet> pets = new ArrayList<>();
+    public void add(Pet pet){pets.add(pet);}
 
     @Override
     public String toString() {

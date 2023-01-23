@@ -49,6 +49,7 @@ public class UserController {
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
         Customer customer = customerService.findOwnerByPetId(petId);
+
         return convertCustomerToCustomerDTO(customer);
     }
 
