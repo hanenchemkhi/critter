@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.exception.ScheduleNotFoundException;
 import com.udacity.jdnd.course3.critter.pet.Pet;
 import com.udacity.jdnd.course3.critter.pet.PetRepository;
 import com.udacity.jdnd.course3.critter.pet.PetService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScheduleService {
@@ -35,9 +37,9 @@ public class ScheduleService {
 
     }
 
-
     public Schedule findScheduleById(Long id) {
-        return scheduleRepository.findById(id).orElse(null);
+        Optional<Schedule> schedule = scheduleRepository.findById(id);
+        return unwrapSchedule(schedule, id);
     }
 
     public List<Schedule> findAllSchedules() {
@@ -54,5 +56,9 @@ public class ScheduleService {
 
     public List<Schedule> findSchedulesByCustomerId(Long customerId) {
         return scheduleRepository.findByCustomersId(customerId);
+    }
+    static Schedule unwrapSchedule(Optional<Schedule> schedule, Long id) {
+        if (schedule.isPresent()) return schedule.get();
+        else throw new ScheduleNotFoundException(id);
     }
 }

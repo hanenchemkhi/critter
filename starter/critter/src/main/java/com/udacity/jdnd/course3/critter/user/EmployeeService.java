@@ -1,5 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.exception.EmployeeNotFoundException;
+import com.udacity.jdnd.course3.critter.exception.PetNotFoundException;
 import com.udacity.jdnd.course3.critter.pet.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,7 +24,8 @@ public class EmployeeService {
     }
 
     public Employee findEmployeeById(Long id) {
-        return employeeRepository.findById(id).get();
+        Optional<Employee> employee = employeeRepository.findById(id);
+        return unwrapEmployee(employee, id);
     }
 
     public List<Employee> findAvailableEmployees(EmployeeRequestDTO employeeDTO) {
@@ -48,5 +52,9 @@ public class EmployeeService {
 
     public List<Employee> findEmployeesByIds(List<Long> ids){
         return employeeRepository.findAllById(ids);
+    }
+    static Employee unwrapEmployee(Optional<Employee> employee, Long id) {
+        if (employee.isPresent()) return employee.get();
+        else throw new EmployeeNotFoundException(id);
     }
 }
