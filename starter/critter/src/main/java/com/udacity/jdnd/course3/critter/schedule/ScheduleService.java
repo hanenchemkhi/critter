@@ -6,6 +6,7 @@ import com.udacity.jdnd.course3.critter.pet.PetService;
 import com.udacity.jdnd.course3.critter.user.Employee;
 import com.udacity.jdnd.course3.critter.user.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.user.EmployeeService;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,14 +45,14 @@ public class ScheduleService {
     }
 
     public List<Schedule> findSchedulesByPetId(Long petId) {
-        return scheduleRepository.findSchedulesByPetId(petId);
+        return scheduleRepository.findByPetsId(petId);
     }
 
     public List<Schedule> findSchedulesByEmployeeId(Long employeeId) {
-        return scheduleRepository.findSchedulesByEmployeeId(employeeId);
+       return scheduleRepository.findByEmployeesId(employeeId);
     }
 
     public List<Schedule> findSchedulesByCustomerId(Long customerId) {
-        return scheduleRepository.findSchedulesByCustomerId(customerId);
+        return scheduleRepository.findByCustomersId(customerId);
     }
 }
