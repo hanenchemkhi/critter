@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.pet.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +16,12 @@ public class EmployeeService {
     EmployeeRepository employeeRepository;
 
 
-    public Long save(Employee employee) {
-        return employeeRepository.save(employee).getId();
+    public Employee save(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
     public Employee findEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElse(null);
+        return employeeRepository.findById(id).get();
     }
 
     public List<Employee> findAvailableEmployees(EmployeeRequestDTO employeeDTO) {
@@ -40,10 +41,12 @@ public class EmployeeService {
     public void setAvailability(Set<DayOfWeek> daysAvailable, long employeeId) {
 
         Employee employee = findEmployeeById(employeeId);
-        if(employee != null){
-            employee.setDaysAvailable(daysAvailable);
-            save(employee);
-        }
+        employee.setDaysAvailable(daysAvailable);
+        employeeRepository.save(employee);
 
+    }
+
+    public List<Employee> findEmployeesByIds(List<Long> ids){
+        return employeeRepository.findAllById(ids);
     }
 }

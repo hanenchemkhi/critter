@@ -7,7 +7,7 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +20,7 @@ import java.util.Set;
 @Entity
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     Long id;
     @Nationalized
     String name;
@@ -35,5 +35,13 @@ public class Employee {
     Set<DayOfWeek> daysAvailable;
 
    @ManyToMany(mappedBy = "employees")
-   List<Schedule> schedules;
+   List<Schedule> schedules = new ArrayList<>();
+    //    https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
+//    Methods used for synchronizing the bidirectional association.
+
+    public void addSchedule(Schedule schedule){
+        schedules.add(schedule);
+        schedule.getEmployees().add(this);
+    }
+
 }

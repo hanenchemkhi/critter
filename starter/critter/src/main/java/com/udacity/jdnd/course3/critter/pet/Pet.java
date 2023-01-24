@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -35,7 +36,12 @@ public class Pet {
     Customer customer;
 
     @ManyToMany(mappedBy = "pets")
-    List<Schedule> schedules;
+    List<Schedule> schedules = new ArrayList<>();
+
+    public void addSchedule(Schedule schedule){
+        schedules.add(schedule);
+        schedule.getPets().add(this);
+    }
 
     @Override
     public String toString() {

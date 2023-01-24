@@ -23,8 +23,10 @@ public class ScheduleController {
 
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        Long id = scheduleService.save(convertScheduleDTOToSchedule(scheduleDTO));
-        return convertScheduleToScheduleDTO(scheduleService.findScheduleById(id));
+        List<Long> petIds = scheduleDTO.getPetIds();
+        List<Long> employeeIds = scheduleDTO.getEmployeeIds();
+        Schedule schedule = scheduleService.save(convertScheduleDTOToSchedule(scheduleDTO),petIds, employeeIds);
+        return convertScheduleToScheduleDTO(schedule);
 
     }
 
@@ -60,6 +62,15 @@ public class ScheduleController {
     private ScheduleDTO convertScheduleToScheduleDTO(Schedule schedule){
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         BeanUtils.copyProperties(schedule, scheduleDTO);
+
+        List<Pet> pets = schedule.getPets();
+        List<Long> petIds = pets.stream().map(Pet::getId).collect(Collectors.toList());
+        scheduleDTO.setPetIds(petIds);
+
+        List<Employee> employees = schedule.getEmployees();
+        List<Long> employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+        scheduleDTO.setEmployeeIds(employeeIds);
+
         return scheduleDTO;
     }
     private Schedule convertScheduleDTOToSchedule(ScheduleDTO scheduleDTO){

@@ -28,7 +28,11 @@ public class Customer {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL,orphanRemoval = true)
     List<Pet> pets = new ArrayList<>();
-    public void add(Pet pet){pets.add(pet);}
+    //https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+//    https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
+    public void add(Pet pet){
+        pets.add(pet);
+        pet.setCustomer(this);}
 
     @Override
     public String toString() {

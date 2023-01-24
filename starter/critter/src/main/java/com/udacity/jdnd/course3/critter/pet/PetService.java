@@ -24,7 +24,6 @@ public class PetService {
         Customer customer = customerRepository.findById(ownerId).get();
         Pet savedPet = petRepository.save(pet);
         customer.add(savedPet);
-        savedPet.setCustomer(customer);
         return petRepository.save(savedPet);
     }
     public Pet findPetById(Long id){

@@ -1,5 +1,11 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.pet.Pet;
+import com.udacity.jdnd.course3.critter.pet.PetRepository;
+import com.udacity.jdnd.course3.critter.pet.PetService;
+import com.udacity.jdnd.course3.critter.user.Employee;
+import com.udacity.jdnd.course3.critter.user.EmployeeRepository;
+import com.udacity.jdnd.course3.critter.user.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +17,21 @@ public class ScheduleService {
 
     @Autowired
     ScheduleRepository scheduleRepository;
+    @Autowired
+    private PetService petService;
+    @Autowired
+    private EmployeeService employeeService;
 
-    public Long save(Schedule schedule) {
-        return scheduleRepository.save(schedule).getId();
+    public Schedule save(Schedule schedule, List<Long> petIds, List<Long> employeeIds ) {
+
+        List<Pet> pets = petService.findPetsByIds(petIds);
+        List<Employee> employees   = employeeService.findEmployeesByIds(employeeIds);
+
+        schedule.setPets(pets);
+        schedule.setEmployees(employees);
+
+        return scheduleRepository.save(schedule);
+
     }
 
 
